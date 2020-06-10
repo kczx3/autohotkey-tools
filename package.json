@@ -1,0 +1,30 @@
+{
+    "name": "autohotkey-tools",
+    "displayName": "AutoHotkey-Tools",
+    "description": "AutoHotkey toolset",
+    "version": "0.0.1",
+    "main": "./src/extension.js",
+    "engines": {
+        "vscode": "^1.40.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Other"
+    ],
+    "activationEvents": [
+        "onLanguage:ahk"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "ahk",
+            "aliases": ["AutoHotkey", "ahk"],
+            "extensions": [".ahk"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "ahk",
+            "scopeName": "source.ahk",
+            "path": "./syntaxes/ahk.tmLanguage.json"
+        }]
+    }
+}

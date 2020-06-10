@@ -1,0 +1,234 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "AutoHotkey",
+	"patterns": [
+		{ "include": "#keywords" },
+		{ "include": "#functiondef" },
+		{ "include": "#fatarrow" },
+		{ "include": "#functioncall" },
+		{ "include": "#methods" },
+		{ "include": "#bivariables" },
+		{ "include": "#strings" },
+		{ "include": "#numbers" },
+		{ "include": "#comments" },
+		{ "include": "#operators" },
+		{ "include": "#directives" },
+		{ "include": "#class" },
+		{ "include": "#this" }
+	],
+	"repository": {
+		"comments": {
+			"patterns": [{
+				"name": "comment.block",
+				"begin": "^\\s*/\\*",
+				"end": "\\*/$"
+			}, {
+				"name": "comment.line",
+				"match": "^\\s*;.*|(\\s|\\t);.*$"
+			}]
+		},
+		"bivariables": {
+			"name": "support.type",
+			"match": "\\b(?i:a_space|a_tab|a_args|a_workingdir|a_initialworkingdir|a_scriptdir|a_scriptname|a_scriptfullpath|a_scripthwnd|a_linenumber|a_linefile|a_thisfunc|a_thislabel|a_ahkversion|a_ahkpath|a_isunicode|a_iscompiled|a_yyyy|a_mm|a_dd|a_mmmm|a_mmm|a_dddd|a_ddd|a_wday|a_yday|a_yweek|a_hour|a_min|a_sec|a_msec|a_now|a_nowutc|a_tickcount|a_issuspended|a_ispaused|a_iscritical|a_listlines|a_titlematchmode|a_titlematchmodespeed|a_detecthiddenwindows|a_detecthiddentext|a_stringcasesense|a_fileencoding|a_sendmode|a_sendlevel|a_storecapslockmode|a_keydelaya_keyduration|a_keydelayplaya_keydurationplay|a_windelay|a_controldelay|a_mousedelaya_mousedelayplay|a_defaultmousespeed|a_coordmodetooltip|a_coordmodepixel|a_coordmodemouse|a_coordmodecaret|a_coordmodemenu|a_regview|a_traymenu|a_allowmainwindow|a_iconhidden|a_icontip|a_iconfile|a_iconnumber|a_timeidle|a_timeidlephysical|a_timeidlekeyboard|a_timeidlemouse|a_thishotkey|a_priorhotkey|a_priorkey|a_timesincethishotkey|a_timesincepriorhotkey|a_endchar|a_comspec|a_temp|a_osversion|a_is64bitos|a_ptrsize|a_language|a_computername|a_username|a_windir|a_programfiles|a_appdata|a_appdatacommon|a_desktop|a_desktopcommon|a_startmenu|a_startmenucommon|a_programs|a_programscommon|a_startup|a_startupcommon|a_mydocuments|a_isadmin|a_screenwidtha_screenheight|a_screendpi|a_cursor|a_eventinfo|a_lasterror|a_index|a_loopfilename|a_loopfileext|a_loopfilepath|a_loopfilefullpath|a_loopfileshortpath|a_loopfileshortname|a_loopfiledir|a_loopfiletimemodified|a_loopfiletimecreated|a_loopfiletimeaccessed|a_loopfileattrib|a_loopfilesize|a_loopfilesizekb|a_loopfilesizemb|a_loopregname|a_loopregtype|a_loopregkey|a_loopregtimemodified|a_loopreadline|a_loopfield|clipboard|errorlevel|true|false)\\b"
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.control.ahk",
+				"match": "\\b(?i:if|else|in|is|gosub|goto|switch|while|until|loop\\s*(parse|files|read|reg)?|continue|break|for|return|try|catch|finally|static|global|new|byref)\\b"
+			}]
+		},
+		"fatarrow": {
+			"name": "meta.function",
+			"match": "((\\w+)\\(|\\()([^(]*)\\)(?=\\s*=>)",
+			"captures": {
+				"2": {
+					"name": "entity.name.function"
+				},
+				"3": {
+					"name": "meta.parameters",
+					"patterns": [
+						{
+							"include": "$self"
+						},
+						{
+							"name": "variable.parameter.function",
+							"match": "[a-zA-Z_$][\\w$]*"
+						}
+					]
+				}
+			}
+		},
+		"functiondef": {
+			"name": "meta.function",
+			"match": "^\\s*(\\w+)\\((.*)(\\))\\s*({)",
+			"captures": {
+				"1": {
+					"patterns": [{
+						"name": "support.function",
+						"match": "__(?i:call|delete|enum|get|init|item|new|set)"
+					}, {
+						"name": "entity.name.function",
+						"match": ".*"
+					}]
+				},
+				"2": {
+					"name": "meta.parameters",
+					"patterns": [
+						{
+							"include": "$self"
+						},
+						{
+							"name": "variable.parameter.function",
+							"match": "[a-zA-Z_$][\\w$]*"
+						}
+					]
+				}
+			}
+		},
+		"functioncall": {
+			"name": "meta.function",
+			"comment": "((\\w+)\\(|\\()([^(]*)\\)",
+			"match": "(\\w+)\\((.*)\\)(?=(\\s*;.*)|.|$)",
+			"captures": {
+				"1": {
+					"patterns": [{
+						"name": "support.function",
+						"match": "\\b(?i:object|array|abs|asin|acos|atan|blockinput|bufferalloc|callbackcreate|callbackfree|caretgetpos|ceil|chr|click|clipboardall|clipwait|comcall|comobjactive|comobjarray|comobjconnect|comobjcreate|comobject|comobjerror|comobjflags|comobjget|comobjquery|comobjtype|comobjvalue|controladditem|controlchoose|controlchoosestring|controlclick|controldeleteitem|controleditpaste|controlfinditem|controlfocus|controlgetchecked|controlgetchoice|controlgetclassnn|controlgetcurrentcol|controlgetcurrentline|controlgetenabled|controlgetfocus|controlgethwnd|controlgetline|controlgetlinecount|controlgetlist|controlgetpos|controlgetselected|controlgetstylecontrolgetexstyle|controlgettab|controlgettext|controlgetvisible|controlhide|controlhidedropdown|controlmove|controlsendcontrolsendtext|controlsetchecked|controlsetenabled|controlsetstylecontrolsetexstyle|controlsettab|controlsettext|controlshow|controlshowdropdown|coordmode|cos|critical|dateadd|datediff|detecthiddentext|detecthiddenwindows|dircopy|dircreate|dirdelete|direxist|dirmove|dirselect|dllcall|download|driveeject|drivegetcapacity|drivegetfilesystem|drivegetlabel|drivegetlist|drivegetserial|drivegetspacefree|drivegetstatus|drivegetstatuscd|drivegettype|drivelock|drivesetlabel|driveunlock|edit|envget|envset|exception|exp|fileappend|filecopy|filecreateshortcut|filedelete|fileencoding|fileexist|fileinstall|filegetattrib|filegetshortcut|filegetsize|filegettime|filegetversion|filemove|fileopen|fileread|filerecycle|filerecycleempty|fileselect|filesetattrib|filesettime|float|floor|format|formattime|func|getkeyname|getkeyvk|getkeysc|getkeystate|getmethod|groupactivate|groupadd|groupclose|groupdeactivate|guicreate|guictrlfromhwnd|guifromhwnd|hasbase|hasmethod|hasprop|hotkey|hotstring|il_create|il_add|il_destroy|imagesearch|inidelete|iniread|iniwrite|input|inputend|inputbox|inputhook|instr|integer|isbyref|isfunc|islabel|isobject|isset|keyhistory|keywait|listhotkeys|listlines|listvars|loadpicture|log|ln|map|max|menubarcreate|menucreate|menufromhandle|menuselect|min|mod|monitorget|monitorgetcount|monitorgetname|monitorgetprimary|monitorgetworkarea|mouseclick|mouseclickdrag|mousegetpos|mousemove|msgbox|numget|numput|objaddref|objrelease|objbindmethod|objclone|objdeleteprop|objhasownprop|objownmethods|objownprops|objgetbase|objgetcapacity|objownpropcount|objrawget|objrawset|objsetbase|objsetcapacity|onclipboardchange|onerror|onexit|onmessage|ord|outputdebug|pause|pixelgetcolor|pixelsearch|postmessage|processclose|processexist|processsetpriority|processwait|processwaitclose|random|randomseed|regexmatch|regexreplace|regdelete|regdeletekey|regread|regwrite|reload|round|run|runas|runwait|send|sendtext|sendinput|sendplay|sendevent|sendlevel|sendmessage|sendmode|setcapslockstate|setcontroldelay|setdefaultmousespeed|setkeydelay|setmousedelay|setnumlockstate|setscrolllockstate|setregview|setstorecapslockmode|settimer|settitlematchmode|setwindelay|setworkingdir|shutdown|sin|sleep|sort|soundbeep|soundget|soundplay|soundset|splitpath|sqrt|statusbargettext|statusbarwait|strcompare|strget|string|stringcasesense|strlen|strlower|strput|strreplace|strsplit|strupper|substr|suspend|sysget|sysgetipaddresses|tan|thread|throw|tooltip|trayseticon|traytip|trim|ltrim|rtrim|type|varsetcapacity|winactivate|winactivatebottom|winactive|winclose|winexist|wingetclass|wingetclientpos|wingetcontrols|wingetcontrolshwnd|wingetcount|wingetid|wingetidlast|wingetlist|wingetminmax|wingetpid|wingetpos|wingetprocessname|wingetprocesspath|wingetstylewingetexstyle|wingettext|wingettitle|wingettranscolor|wingettransparent|winhide|winkill|winmaximize|winminimize|winminimizeallwinminimizeallundo|winmove|winmovebottom|winmovetop|winredraw|winrestore|winsetalwaysontop|winsetenabled|winsetregion|winsetstylewinsetexstyle|winsettitle|winsettranscolor|winsettransparent|winshow|winwait|winwaitactivewinwaitnotactive|winwaitclose)\\b"
+					}, {
+						"name": "entity.name.function",
+						"match": "\\w+"
+					}]
+				},
+				"2": {
+					"patterns": [{
+						"include": "$self"
+					}]
+				},
+				"3": {
+					"name": "comment.line"
+				}
+			}
+		},
+		"methods": {
+			"name": "meta.function",
+			"match": "\\.(\\w+)\\(",
+			"captures": {
+				"1": {
+					"name": "entity.name.function"
+				}
+			}
+		},
+		"strings": {
+			"name": "string.quoted",
+			"patterns": [{
+				"include": "#embedded-sql-double"
+			}, {
+				"include": "#embedded-sql-single"
+			}, {
+				"name": "string.quoted.double.ahk",
+				"begin": "\"",
+				"end": "\"",
+				"patterns": [
+					{
+						"include": "#escapes"
+					},
+					{
+						"name": "constant.character.escape.ahk",
+						"match": "`\""
+					}
+				]
+			}, {
+				"name": "string.quoted.single.ahk",
+				"begin": "'",
+				"end": "'",
+				"patterns": [
+					{
+						"include": "#escapes"
+					},
+					{
+						"name": "constant.character.escape.ahk",
+						"match": "`'"
+					}
+				]
+			}]
+		},
+		"embedded-sql-double": {
+			"begin": "\"\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND)\\b)",
+			"end": "\"",
+			"contentName": "source.sql.embedded",
+			"name": "string.quoted.double.sql",
+			"patterns": [
+				{
+					"include": "source.sql"
+				}
+			]
+		},
+		"embedded-sql-single": {
+			"begin": "'\\s*(?=(SELECT|INSERT|UPDATE|DELETE|CREATE|REPLACE|ALTER|AND)\\b)",
+			"end": "'",
+			"contentName": "source.sql.embedded",
+			"name": "string.quoted.single.sql",
+			"patterns": [
+				{
+					"include": "source.sql"
+				}
+			]
+		},
+		"numbers": {
+			"name": "constant.numeric",
+			"match": "\\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\\.?[0-9]*)|(\\.[0-9]+))((e|E)(\\+|-)?[0-9]+)?)\\b"
+		},
+		"operators": {
+			"name": "keyword.operator",
+			"match": "(:=|.=|::|=|==|=>|\\+|-|\\*|\\^|/|\\||&|!|~|\\|<|<<|>|>>|\\?|:|\\s+\\.\\s+)"
+		},
+		"escapes": {
+			"name": "constant.character.escape.ahk",
+			"match": "`(`|;|:|n|r|b|t|s|v|a|f)"
+		},
+		"directives": {
+			"match": "(?i)^(#include(again)?)\\s*(<)?\\w+\\.?\\w+(>)?",
+			"captures": {
+				"1": {
+					"name": "keyword.other"
+				},
+				"3": {
+					"name": "keyword.other"
+				},
+				"4": {
+					"name": "keyword.other"
+				}
+			}
+		},
+		"class": {
+			"name": "support",
+			"match": "(?i)^\\s*(class)\\s*(\\w+)\\s*(extends)?\\s*(\\w+)?\\s*{",
+			"captures": {
+				"1": {
+					"name": "support.class"
+				},
+				"2": {
+					"name": "entity.name.class"
+				},
+				"3": {
+					"name": "keyword.other"
+				},
+				"4": {
+					"patterns": [{
+						"name": "support.class",
+						"match": "(?i)object|map|array|buffer|class|enumerator|exception|file|func|function|gui|guicontrol|menu|menubar|regexmatch|any"
+					}, {
+						"name": "entity.name.class",
+						"match": "\\w+"
+					}]
+
+				}
+			}
+		},
+		"this": {
+			"name": "variable.language",
+			"match": "\\b(?i:this)\\b"
+		}
+	},
+	"scopeName": "source.ahk"
+}
